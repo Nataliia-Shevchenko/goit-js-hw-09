@@ -15,6 +15,8 @@ startBtnEl.disabled = true;
 
 let timerId = null;
 
+let selectedDate = null;
+
 const options = {
   enableTime: true,
   time_24hr: true,
@@ -25,32 +27,34 @@ const options = {
       Notiflix.Notify.failure('Please choose a date in the future');
     } else {
       startBtnEl.disabled = false;
+      return (selectedDate = selectedDates[0]);
     }
-
-    startBtnEl.addEventListener('click', e => {
-      startBtnEl.disabled = true;
-
-      timerId = setInterval(() => {
-        const timerTime = selectedDates[0] - Date.now();
-
-        const timerData = convertMs(timerTime);
-
-        timerDayEl.textContent = timerData.days;
-        timerHourEl.textContent = timerData.hours;
-        timerMinEl.textContent = timerData.minutes;
-        timerSecEl.textContent = timerData.seconds;
-      }, 1000);
-
-      // if (
-        
-      // ) {
-      //   clearInterval(timerId);
-      // }
-    });
   },
 };
 
 const fp = flatpickr(inputDatetimeEl, options);
+
+startBtnEl.addEventListener('click', handleStartBtnClick);
+
+function handleStartBtnClick(e) {
+  startBtnEl.disabled = true;
+
+  timerId = setInterval(() => {
+    const timerTime = selectedDate - Date.now();
+
+    const timerData = convertMs(timerTime);
+
+    timerDayEl.textContent = timerData.days;
+    timerHourEl.textContent = timerData.hours;
+    timerMinEl.textContent = timerData.minutes;
+    timerSecEl.textContent = timerData.seconds;
+
+    if (timerTime < 1) {
+      clearInterval(timerId);
+      return;
+    }
+  }, 1000);
+}
 
 function convertMs(ms) {
   const second = 1000;
