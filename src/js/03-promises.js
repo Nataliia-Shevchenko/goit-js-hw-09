@@ -11,19 +11,19 @@ function handleFormSubmit(e) {
     elements: { delay, step, amount },
   } = e.currentTarget;
 
-  for (let i = 0; i <= amount.value; i += 1) {
-    let delayTime = delay.value + step.value * i;
+  for (let i = 0; i < Number(amount.value); i += 1) {
+    let delayTime = Number(delay.value) + Number(step.value) * i;
     let positionPromise = i + 1;
 
     createPromise(positionPromise, delayTime)
-      .then(({ positionPromise, delayTime }) => {
+      .then(({ position, delay }) => {
         Notiflix.Notify.success(
-          `✅ Fulfilled promise ${positionPromise} in ${delayTime} ms`
+          `✅ Fulfilled promise ${position} in ${delay} ms`
         );
       })
-      .catch(({ positionPromise, delayTime }) => {
+      .catch(({ position, delay }) => {
         Notiflix.Notify.failure(
-          `❌ Rejected promise ${positionPromise} in ${delayTime} ms`
+          `❌ Rejected promise ${position} in ${delay} ms`
         );
       });
   }
