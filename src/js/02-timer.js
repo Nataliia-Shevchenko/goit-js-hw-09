@@ -27,7 +27,6 @@ const options = {
       Notiflix.Notify.failure('Please choose a date in the future');
     } else {
       startBtnEl.disabled = false;
-      this.enableTime = false;
       return (selectedDate = selectedDates[0]);
     }
   },
@@ -42,7 +41,7 @@ function handleStartBtnClick(e) {
 
   timerId = setInterval(() => {
     const timerTime = selectedDate - Date.now();
-    console.log(timerTime);
+    
     const timerData = convertMs(timerTime);
 
     timerDayEl.textContent = timerData.days;
